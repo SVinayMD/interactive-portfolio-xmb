@@ -1,0 +1,15 @@
+# Folder with old/backup files
+old/
+
+# IDE and editor directories
+.vscode/
+.idea/
+
+# macOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+
+# Log files
+*.log

@@ -1,0 +1,183 @@
+/* 1. Global Styles & Imports */
+@import url('https://fonts.googleapis.comcom/css2?family=Poppins:wght@400;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling on desktop */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 2. Page-level Widgets (Profile, Time, Background) */
+.animated-bg-grad { background: linear-gradient(-45deg, #fe5196, #8a5bf1, #2af598, #f77062); background-size: 400% 400%; animation: gradient 30s ease infinite; }
+@keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+#dynamic-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+#dynamic-background canvas { display: block; width: 100%; height: 100%; }
+#profile-widget { position: absolute; top: 1rem; left: 1.5rem; display: flex; align-items: center; gap: 1rem; z-index: 10; }
+.profile-image-container { width: 70px; height: 70px; padding: 4px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; flex-shrink: 0; }
+.profile-image-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.profile-text-container { padding: 8px 16px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; backdrop-filter: blur(2px); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+.profile-name { font-size: 18px; font-weight: 600; }
+.profile-online-name, .profile-role { font-size: 13px; opacity: 0.8; }
+
+#language-switcher {
+    position: relative;
+    margin-left: 1rem;
+}
+
+#language-switcher i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+#lang-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px 36px 8px 38px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#lang-select:focus { outline: none; }
+#lang-select:hover { background-color: rgba(255, 255, 255, 0.2); }
+#lang-select option { background-color: #333; color: #fff; border: none; }
+
+#language-switcher::after {
+    content: '\f078';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+#time-widget {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    z-index: 10;
+    cursor: default;
+}
+.time-lines { display: flex; flex-direction: column; gap: 0.25rem; }
+.time-entry { display: flex; gap: 0.5rem; align-items: baseline; color: white; text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); font-family: 'Poppins', monospace; font-size: 14px; }
+.time-label { opacity: 0.7; font-size: 11px; font-weight: 400; }
+.gg-time { box-sizing: border-box; position: relative; display: block; transform: scale(var(--ggs,1)); width: 18px; height: 18px; border-radius: 100%; border: 2px solid transparent; box-shadow: 0 0 0 2px currentColor; color: white; }
+.gg-time::after { content: ""; display: block; box-sizing: border-box; position: absolute; width: 7px; height: 7px; border-left: 2px solid; border-bottom: 2px solid; top: 1px; left: 5px; }
+
+/* 3. Core XMB Navigation Layout */
+#xmb-container { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    gap: 2rem; 
+    padding: max(20vh, 100px) 5vw 0 5vw; 
+    height: 100vh; 
+}
+.xmb-left-panel { flex: 1 1 auto; min-width: 0; }
+
+/* 4. XMB Menu Item Styling (Horizontal & Vertical) */
+#horizontal-menu { display: flex; gap: 60px; align-items: center; flex-wrap: wrap; }
+.xmb-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.5; transition: all 0.2s ease-in-out; }
+.xmb-item i { font-size: 48px; }
+.xmb-item span { margin-top: 10px; font-size: 16px; font-weight: 600; }
+.xmb-item.active { opacity: 1; transform: scale(1.25); filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)); }
+
+#vertical-menus-container { margin-top: 30px; }
+.vertical-menu { list-style: none; padding: 0; margin: 0; display: none; }
+.vertical-menu.active { display: block; }
+.vertical-menu li { display: flex; align-items: center; gap: 20px; padding: 10px 15px; margin-bottom: 10px; cursor: pointer; opacity: 0.7; transition: all 0.2s ease-in-out; border-radius: 5px; }
+.vertical-menu li i { font-size: 24px; width: 30px; text-align: center; }
+.vertical-menu li span { font-size: 18px; }
+.vertical-menu li.active { opacity: 1; background-color: rgba(255, 255, 255, 0.2); transform: translateX(10px); }
+#content-display { flex: 0 1 500px; background-color: rgba(10, 10, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; padding: 25px; backdrop-filter: blur(8px); box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4); opacity: 0; transform: scale(0.95); }
+#content-display.visible { opacity: 1; transform: scale(1); transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+#content-title { margin-top: 0; font-size: 24px; font-weight: 600; color: #FFFFFF; text-shadow: 0 0 8px rgba(254, 81, 150, 0.5); }
+#content-body { font-size: 16px; line-height: 1.6; overflow-wrap: break-word; word-wrap: break-word; }
+#content-body strong { color: #f0f0f0; }
+
+#content-body a {
+    color: #a0e9ff;
+    text-decoration: underline;
+    transition: color 0.2s ease-in-out;
+}
+
+#content-body a:hover,
+#content-body a:focus {
+    color: #ffffff;
+    text-decoration: none;
+}
+/* 5. Responsive Adjustments */
+@media (max-height: 500px) {
+    body {
+        overflow-y: auto;
+    }
+    #xmb-container {
+        height: auto;
+        padding-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    body { overflow-y: auto; }
+    #xmb-container { flex-direction: column; align-items: stretch; padding: 160px 1rem 2rem 1rem; height: auto; }
+    #horizontal-menu { justify-content: center; gap: 25px; row-gap: 30px; }
+    .xmb-item i { font-size: 40px; }
+    .xmb-item span { font-size: 14px; }
+    .xmb-left-panel { min-width: unset; }
+    #vertical-menus-container { margin-top: 20px; }
+    .vertical-menu li:last-child { margin-bottom: 0; }
+    .vertical-menu li.active { transform: translateX(5px); }
+    #content-display { width: 100%; margin-top: 15px; }
+    #profile-widget { left: 50%; transform: translateX(-50%); width: 90vw; }
+    .profile-name { font-size: 16px; }
+    #time-widget {
+        position: fixed;
+        cursor: pointer;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #time-widget.collapsed {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+    #time-widget .time-lines {
+        transition: opacity 0.2s ease;
+    }
+    #time-widget.collapsed .time-lines {
+        display: none;
+        opacity: 0;
+    }
+}
