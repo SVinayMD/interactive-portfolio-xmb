@@ -134,38 +134,46 @@ class WaveCanvas {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the WebGL background animation.
-    const waveCanvas = new WaveCanvas('#dynamic-background');
-    waveCanvas.init();
+class XMBNavigation {
+    constructor() {
+        this.horizontalItems = document.querySelectorAll('.xmb-item');
+        this.verticalMenus = document.querySelectorAll('.vertical-menu');
+        this.contentDisplay = document.getElementById('content-display');
+        this.contentTitle = document.getElementById('content-title');
+        this.contentBody = document.getElementById('content-body');
 
-    // Get all necessary DOM elements for the navigation logic.
-    const horizontalItems = document.querySelectorAll('.xmb-item');
-    const verticalMenus = document.querySelectorAll('.vertical-menu');
-    const contentDisplay = document.getElementById('content-display');
-    const contentTitle = document.getElementById('content-title');
-    const contentBody = document.getElementById('content-body');
+        this.currentX = 0;
+        this.currentY = 0;
+    }
 
-    let currentX = 0;
-    let currentY = 0;
+    init() {
+        this.addEventListeners();
+        // Wait for translations to be applied before showing initial content
+        document.addEventListener('translationsApplied', () => {
+            const activeItem = document.querySelector('.vertical-menu li.active');
+            if (activeItem) {
+                this.updateContent(activeItem);
+            } else {
+                this.updateSelection();
+            }
+        });
+    }
 
-    // Updates the active classes on menu items based on the current coordinates.
-    function updateSelection() {
-        horizontalItems.forEach((item, index) => {
-            item.classList.toggle('active', index === currentX);
+    updateSelection() {
+        this.horizontalItems.forEach((item, index) => {
+            item.classList.toggle('active', index === this.currentX);
         });
 
-        verticalMenus.forEach((menu, index) => {
-            if (index === currentX) {
+        this.verticalMenus.forEach((menu, index) => {
+            if (index === this.currentX) {
                 menu.classList.add('active');
                 const menuItems = menu.querySelectorAll('li');
                 menuItems.forEach((item, itemIndex) => {
-                    item.classList.toggle('active', itemIndex === currentY);
+                    item.classList.toggle('active', itemIndex === this.currentY);
                 });
-                // Update the content panel based on the newly active item.
                 const activeVerticalItem = menu.querySelector('li.active');
                 if (activeVerticalItem) {
-                     updateContent(activeVerticalItem);
+                     this.updateContent(activeVerticalItem);
                 }
             } else {
                 menu.classList.remove('active');
@@ -174,95 +182,82 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Populates the content display panel with data from the selected item.
-    function updateContent(selectedItem) {
+    updateContent(selectedItem) {
         if (selectedItem.dataset.hideContent) {
-            contentDisplay.classList.remove('visible');
+            this.contentDisplay.classList.remove('visible');
             return;
         }
 
         if (selectedItem.dataset.link) {
-            contentTitle.textContent = selectedItem.dataset.title || 'Link';
-            contentBody.innerHTML = selectedItem.dataset.content;
+            this.contentTitle.textContent = selectedItem.dataset.title || 'Link';
+            this.contentBody.innerHTML = selectedItem.dataset.content;
         } else {
-            contentTitle.textContent = selectedItem.dataset.title;
-            contentBody.innerHTML = selectedItem.dataset.content;
+            this.contentTitle.textContent = selectedItem.dataset.title;
+            this.contentBody.innerHTML = selectedItem.dataset.content;
         }
-        contentDisplay.classList.add('visible');
+        this.contentDisplay.classList.add('visible');
     }
 
-    function executeAction(selectedItem) {
+    executeAction(selectedItem) {
         if (selectedItem.dataset.link) {
             window.open(selectedItem.dataset.link, '_blank');
         }
     }
 
-    // Handles keyboard navigation with arrow keys and Enter.
-    document.addEventListener('keydown', (e) => {
-        const navKeys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Enter'];
-        // If the key pressed is not one of our navigation keys, do nothing.
-        if (!navKeys.includes(e.key)) {
-            return;
-        }
-        e.preventDefault();
+    addEventListeners() {
+        document.addEventListener('keydown', (e) => {
+            const navKeys = ['ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'Enter'];
+            if (!navKeys.includes(e.key)) return;
+            e.preventDefault();
 
-        const activeVerticalMenu = document.querySelector(`.vertical-menu[data-column='${currentX}']`);
-        if (!activeVerticalMenu) return; 
-        const verticalItemsCount = activeVerticalMenu.querySelectorAll('li').length;
-        if (verticalItemsCount === 0) return;
+            const activeVerticalMenu = document.querySelector(`.vertical-menu[data-column='${this.currentX}']`);
+            if (!activeVerticalMenu) return;
+            const verticalItemsCount = activeVerticalMenu.querySelectorAll('li').length;
+            if (verticalItemsCount === 0) return;
 
-        switch (e.key) {
-            case 'ArrowRight': 
-                currentX = (currentX + 1) % horizontalItems.length; 
-                currentY = 0; 
-                break;
-            case 'ArrowLeft': 
-                currentX = (currentX - 1 + horizontalItems.length) % horizontalItems.length; 
-                currentY = 0; 
-                break;
-            case 'ArrowDown': currentY = (currentY + 1) % verticalItemsCount; break;
-            case 'ArrowUp': currentY = (currentY - 1 + verticalItemsCount) % verticalItemsCount; break;
-            case 'Enter':
-                const selectedItem = activeVerticalMenu.querySelector('li.active');
-                if (selectedItem) executeAction(selectedItem);
-                break;
-        }
-        updateSelection();
-    });
-
-    // Adds click listeners for both horizontal and vertical menu items.
-    horizontalItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            if (currentX === index) return;
-            currentX = index;
-            currentY = 0;
-            updateSelection();
+            switch (e.key) {
+                case 'ArrowRight': this.currentX = (this.currentX + 1) % this.horizontalItems.length; this.currentY = 0; break;
+                case 'ArrowLeft': this.currentX = (this.currentX - 1 + this.horizontalItems.length) % this.horizontalItems.length; this.currentY = 0; break;
+                case 'ArrowDown': this.currentY = (this.currentY + 1) % verticalItemsCount; break;
+                case 'ArrowUp': this.currentY = (this.currentY - 1 + verticalItemsCount) % verticalItemsCount; break;
+                case 'Enter':
+                    const selectedItem = activeVerticalMenu.querySelector('li.active');
+                    if (selectedItem) this.executeAction(selectedItem);
+                    break;
+            }
+            this.updateSelection();
         });
-    });
 
-    verticalMenus.forEach(menu => {
-        menu.querySelectorAll('li').forEach((item, index) => {
+        this.horizontalItems.forEach((item, index) => {
             item.addEventListener('click', () => {
-                const parentColumn = parseInt(menu.dataset.column, 10);
-                const wasAlreadyActive = item.classList.contains('active');
-                currentX = parentColumn;
-                currentY = index;
-                updateSelection();
-                if (wasAlreadyActive) {
-                    executeAction(item);
-                }
+                if (this.currentX === index) return;
+                this.currentX = index;
+                this.currentY = 0;
+                this.updateSelection();
             });
         });
-    });
 
-    // Set the initial selection when the page loads.
-    // We wait for the i18n script to finish loading translations before setting the initial state.
-    document.addEventListener('translationsApplied', () => {
-        const activeItem = document.querySelector('.vertical-menu li.active');
-        if (activeItem) {
-            updateContent(activeItem);
-        } else {
-            updateSelection();
-        }
-    });
+        this.verticalMenus.forEach(menu => {
+            menu.querySelectorAll('li').forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    const parentColumn = parseInt(menu.dataset.column, 10);
+                    const wasAlreadyActive = item.classList.contains('active');
+                    this.currentX = parentColumn;
+                    this.currentY = index;
+                    this.updateSelection();
+                    if (wasAlreadyActive) {
+                        this.executeAction(item);
+                    }
+                });
+            });
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const waveCanvas = new WaveCanvas('#dynamic-background');
+    waveCanvas.init();
+
+    const navigation = new XMBNavigation();
+    navigation.init();
 });
