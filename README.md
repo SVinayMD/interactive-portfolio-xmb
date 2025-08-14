@@ -2,7 +2,9 @@
 
 This is my personal portfolio website, It features a unique, keyboard-navigable interface inspired by the PlayStation Cross-Media Bar (XMB). It caters to implement and showcase different skillsets and will be refactor as i grow professionally.
 
-**[View the Live Demo](https://svinaymd.github.io/interactive-portfolio-xmb/)**
+### [➡️ View Live Demo](https://svinaymd.github.io/interactive-portfolio-xmb/)
+
+![Portfolio Navigation Demo](images/previewGif.gif)
 
 ## ✨ Features
 
