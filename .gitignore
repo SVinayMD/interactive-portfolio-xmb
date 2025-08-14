@@ -1,15 +1,15 @@
-# Folder with old/backup files
-old/
+# Dependencies
+/node_modules
 
-# IDE and editor directories
+# Playwright reports and results
+/playwright-report/
+/test-results/
+
+# Local environment variables
+.env
+
+# IDE and OS specific files
 .vscode/
 .idea/
-
-# macOS specific files
 .DS_Store
-
-# Windows specific files
 Thumbs.db
-
-# Log files
-*.log

@@ -1,0 +1,26 @@
+{
+  "name": "portfoliopage",
+  "version": "1.0.0",
+  "description": "An interactive portfolio with a UI inspired by the PlayStation Cross-Media Bar (XMB).",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -p 8080",
+    "test": "npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SVinayMD/interactive-portfolio-xmb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SVinayMD/interactive-portfolio-xmb/issues"
+  },
+  "homepage": "https://github.com/SVinayMD/interactive-portfolio-xmb#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^24.2.1",
+    "http-server": "^14.1.1"
+  }
+}
