@@ -160,6 +160,26 @@ body {
     }
 }
 
+/* Footer Styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    font-size: 0.8rem;
+    z-index: 1000; /* Ensure it's above the background canvas */
+    pointer-events: none; /* Allows clicks to pass through to elements underneath */
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
+
 @media (max-width: 768px) and (orientation: portrait) {
     body { overflow-y: auto; }
     #xmb-container { flex-direction: column; align-items: stretch; padding: 160px 1rem 2rem 1rem; height: auto; }
