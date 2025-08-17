@@ -12,7 +12,18 @@ export const test = base.extend<MyFixtures>({
   // Override the page fixture to add an init script that disables animations.
   // This will run for every test that uses the `page` fixture.
   page: async ({ page }, use) => {
+    // Disable expensive WebGL animation for performance.
     await page.addInitScript('window.E2E_ANIMATIONS_DISABLED = true;');
+
+    // Disable all CSS transitions and animations for stability. This is a common
+    // best practice for E2E tests to prevent flakiness.
+    await page.addStyleTag({
+      content: `*, *::before, *::after {
+          transition-duration: 0s !important;
+          animation-duration: 0s !important;
+      }`,
+    });
+
     await use(page);
   },
 
