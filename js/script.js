@@ -255,9 +255,11 @@ class XMBNavigation {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const waveCanvas = new WaveCanvas('#dynamic-background');
-    waveCanvas.init();
-
+    // A global flag to disable animations for testing, set via an init script in Playwright.
+    if (!window.E2E_ANIMATIONS_DISABLED) {
+        const waveCanvas = new WaveCanvas('#dynamic-background');
+        waveCanvas.init();
+    }
     const navigation = new XMBNavigation();
     navigation.init();
 });

@@ -9,6 +9,13 @@ type MyFixtures = {
 // Extend the base 'test' with our new fixtures.
 // This creates a new 'test' function that we'll use in our spec files.
 export const test = base.extend<MyFixtures>({
+  // Override the page fixture to add an init script that disables animations.
+  // This will run for every test that uses the `page` fixture.
+  page: async ({ page }, use) => {
+    await page.addInitScript('window.E2E_ANIMATIONS_DISABLED = true;');
+    await use(page);
+  },
+
   // 'homePage' is the name of our new fixture.
   homePage: async ({ page }, use) => {
     // 1. Set up the fixture.
