@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.dispatchEvent(new CustomEvent('translationsApplied'));
+        window.translationsApplied = true;
     }
 
     // Function to set the language

@@ -32,6 +32,7 @@ export const test = base.extend<MyFixtures>({
     // 1. Set up the fixture.
     const homePage = new HomePage(page);
     await homePage.goto();
+    await page.waitForFunction(() => (window as any).translationsApplied);
 
     // 2. Use the fixture value in the test.
     await use(homePage);
