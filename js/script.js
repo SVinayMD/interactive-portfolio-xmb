@@ -333,4 +333,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const navigation = new XMBNavigation();
     navigation.init();
+
+    // Dark mode toggle logic
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    function setDarkMode(enabled) {
+        document.body.classList.toggle('dark-mode', enabled);
+        if (darkModeToggle) {
+            const icon = darkModeToggle.querySelector('i');
+            if (enabled) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+        localStorage.setItem('portfolio-dark-mode', enabled ? '1' : '0');
+    }
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            setDarkMode(!document.body.classList.contains('dark-mode'));
+        });
+        // Load preference
+        const saved = localStorage.getItem('portfolio-dark-mode');
+        setDarkMode(saved === '1');
+    }
 });

@@ -101,6 +101,48 @@ body {
     z-index: 10;
     cursor: default;
 }
+
+#dark-mode-toggle {
+    position: absolute;
+    top: 1rem;
+    right: calc(1rem + 56px); /* 1rem + time widget width */
+    background: var(--bg-widget);
+    border: var(--border-widget);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#dark-mode-toggle:hover {
+    background: var(--bg-widget-hover);
+}
+#dark-mode-toggle i {
+    font-size: 22px;
+    color: var(--color-text);
+    transition: color 0.2s;
+}
+
+body.dark-mode {
+    --color-text: #e0e0e0;
+    --color-link: #6ec6ff;
+    --color-link-hover: #e0e0e0;
+    --color-glow: rgba(80, 80, 80, 0.8);
+    --color-title-glow: rgba(80, 80, 80, 0.5);
+    --bg-panel: rgba(20, 20, 30, 0.85);
+    --bg-widget: rgba(40, 40, 60, 0.2);
+    --bg-widget-hover: rgba(60, 60, 80, 0.3);
+    --border-widget: 1px solid rgba(80, 80, 80, 0.3);
+}
+body.dark-mode.animated-bg-grad {
+    background: linear-gradient(-45deg, #23272e, #3a3f4a, #1a1d23, #444b5a);
+    background-size: 400% 400%;
+    animation: gradient 30s ease infinite;
+}
 .time-lines { display: flex; flex-direction: column; gap: 0.25rem; }
 .time-entry { display: flex; gap: 0.5rem; align-items: baseline; color: var(--color-text); text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); font-family: var(--font-primary), monospace; font-size: 14px; }
 .time-label { opacity: 0.7; font-size: 11px; font-weight: 400; }
