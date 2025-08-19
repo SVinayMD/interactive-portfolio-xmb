@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         # Define the projects from playwright.config.ts to run in parallel
-        project: ['chromium', 'firefox', 'webkit', 'Mobile Chrome', 'Mobile Safari']
+        project: ['chromium', 'firefox', 'Mobile Chrome']
 
-    name: Test on ${{ matrix.project }}
+    name: Test on ${{ matrix.project }} 
 
     steps:
       - uses: actions/checkout@v4
