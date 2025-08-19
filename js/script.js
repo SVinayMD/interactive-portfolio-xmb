@@ -136,8 +136,9 @@ class WaveCanvas {
 
 class XMBNavigation {
     constructor() {
-        this.horizontalItems = document.querySelectorAll('.xmb-item');
-        this.verticalMenus = document.querySelectorAll('.vertical-menu');
+        this.horizontalMenu = document.getElementById('horizontal-menu');
+        this.horizontalItems = Array.from(this.horizontalMenu.querySelectorAll('.xmb-item'));
+    this.verticalMenus = Array.from(document.querySelectorAll('.vertical-menu'));
         this.contentDisplay = document.getElementById('content-display');
         this.contentTitle = document.getElementById('content-title');
         this.contentBody = document.getElementById('content-body');
@@ -160,26 +161,86 @@ class XMBNavigation {
     }
 
     updateSelection() {
+        // Horizontal menu active state
         this.horizontalItems.forEach((item, index) => {
             item.classList.toggle('active', index === this.currentX);
         });
 
+        // Center horizontal menu
+        this.centerHorizontalMenu();
+
+        // Vertical menu active state
         this.verticalMenus.forEach((menu, index) => {
             if (index === this.currentX) {
                 menu.classList.add('active');
-                const menuItems = menu.querySelectorAll('li');
+                const menuItems = Array.from(menu.querySelectorAll('li'));
                 menuItems.forEach((item, itemIndex) => {
                     item.classList.toggle('active', itemIndex === this.currentY);
                 });
+                // Center vertical menu
+                this.centerVerticalMenu(menu, this.currentY);
                 const activeVerticalItem = menu.querySelector('li.active');
                 if (activeVerticalItem) {
-                     this.updateContent(activeVerticalItem);
+                    this.updateContent(activeVerticalItem);
                 }
+                // Position vertical menu below selected horizontal item
+                this.positionVerticalMenu(menu);
             } else {
                 menu.classList.remove('active');
+                menu.style.transform = '';
+                    menu.style.left = '';
+                    menu.style.top = '';
                 menu.querySelectorAll('li').forEach(item => item.classList.remove('active'));
             }
         });
+    }
+    positionVerticalMenu(menu) {
+        // Get selected horizontal item
+        const selectedItem = this.horizontalItems[this.currentX];
+        const xmbPanel = this.horizontalMenu.parentElement;
+        if (!selectedItem || !xmbPanel) return;
+        // Get bounding rects
+        const itemRect = selectedItem.getBoundingClientRect();
+        const panelRect = xmbPanel.getBoundingClientRect();
+        // Calculate left so vertical menu is centered under horizontal item
+        const left = itemRect.left - panelRect.left + (itemRect.width / 2) - (menu.offsetWidth / 2);
+        // Calculate top so vertical menu starts just below horizontal menu
+        const horizontalMenuRect = this.horizontalMenu.getBoundingClientRect();
+        const top = horizontalMenuRect.bottom - panelRect.top + 8; // 8px gap
+        menu.style.left = `${left}px`;
+        menu.style.top = `${top}px`;
+    }
+
+    centerHorizontalMenu() {
+        // Only center on desktop, not mobile (responsive)
+        const isMobile = window.innerWidth <= 768 && window.matchMedia('(orientation: portrait)').matches;
+        if (isMobile) {
+            this.horizontalMenu.style.transition = 'transform 0.3s cubic-bezier(0.4,0,0.2,1)';
+            this.horizontalMenu.style.transform = '';
+            return;
+        }
+        // Center the selected horizontal item in the menu
+        const item = this.horizontalItems[this.currentX];
+        if (!item) return;
+        // Get parent container (xmb-left-panel)
+        const parent = this.horizontalMenu.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+        const itemRect = item.getBoundingClientRect();
+        // Calculate offset so item center aligns with parent center
+        const parentCenter = parentRect.left + parentRect.width / 2;
+        const itemCenter = itemRect.left + itemRect.width / 2;
+        // Current transform value
+        const currentTransform = this.horizontalMenu.style.transform;
+        // Calculate the required offset
+        const offset = parentCenter - itemCenter + (parseFloat(currentTransform?.match(/translateX\((-?\d+(?:\.\d+)?)px\)/)?.[1] || 0));
+        this.horizontalMenu.style.transition = 'transform 0.3s cubic-bezier(0.4,0,0.2,1)';
+        this.horizontalMenu.style.transform = `translateX(${offset}px)`;
+    }
+
+    centerVerticalMenu(menu, itemIndex) {
+        // Remove vertical centering logic; always set translateY(25px)
+        menu.style.transition = 'transform 0.3s cubic-bezier(0.4,0,0.2,1)';
+        menu.style.transform = 'translateY(25px)';
     }
 
     updateContent(selectedItem) {
@@ -216,10 +277,20 @@ class XMBNavigation {
             if (verticalItemsCount === 0) return;
 
             switch (e.key) {
-                case 'ArrowRight': this.currentX = (this.currentX + 1) % this.horizontalItems.length; this.currentY = 0; break;
-                case 'ArrowLeft': this.currentX = (this.currentX - 1 + this.horizontalItems.length) % this.horizontalItems.length; this.currentY = 0; break;
-                case 'ArrowDown': this.currentY = (this.currentY + 1) % verticalItemsCount; break;
-                case 'ArrowUp': this.currentY = (this.currentY - 1 + verticalItemsCount) % verticalItemsCount; break;
+                case 'ArrowRight':
+                    this.currentX = (this.currentX + 1) % this.horizontalItems.length;
+                    this.currentY = 0;
+                    break;
+                case 'ArrowLeft':
+                    this.currentX = (this.currentX - 1 + this.horizontalItems.length) % this.horizontalItems.length;
+                    this.currentY = 0;
+                    break;
+                case 'ArrowDown':
+                    this.currentY = (this.currentY + 1) % verticalItemsCount;
+                    break;
+                case 'ArrowUp':
+                    this.currentY = (this.currentY - 1 + verticalItemsCount) % verticalItemsCount;
+                    break;
                 case 'Enter':
                     const selectedItem = activeVerticalMenu.querySelector('li.active');
                     if (selectedItem) this.executeAction(selectedItem);
