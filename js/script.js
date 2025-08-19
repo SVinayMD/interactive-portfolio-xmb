@@ -354,8 +354,11 @@ document.addEventListener('DOMContentLoaded', () => {
         darkModeToggle.addEventListener('click', () => {
             setDarkMode(!document.body.classList.contains('dark-mode'));
         });
-        // Load preference
-        const saved = localStorage.getItem('portfolio-dark-mode');
+        // Load preference or use system/browser preference if not set
+        let saved = localStorage.getItem('portfolio-dark-mode');
+        if (saved === null) {
+            saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? '1' : '0';
+        }
         setDarkMode(saved === '1');
     }
 });

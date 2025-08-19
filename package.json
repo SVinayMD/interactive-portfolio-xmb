@@ -4,8 +4,9 @@
   "description": "An interactive portfolio with a UI inspired by the PlayStation Cross-Media Bar (XMB).",
   "main": "index.js",
   "scripts": {
-    "start": "http-server -p 8080",
-    "test": "npx playwright test"
+  "start": "http-server -p 8080",
+  "test": "npx playwright test",
+  "build:obfuscate": "javascript-obfuscator js/script.js --output dist/script.js && javascript-obfuscator js/i18n.js --output dist/i18n.js && javascript-obfuscator js/widget-scripts.js --output dist/widget-scripts.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@playwright/test": "^1.54.2",
     "@types/node": "^24.2.1",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "javascript-obfuscator": "^4.1.1"
   }
 }
