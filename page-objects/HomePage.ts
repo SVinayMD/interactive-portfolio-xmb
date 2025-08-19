@@ -12,18 +12,22 @@ export class HomePage {
   readonly xmbContainer: Locator;
   readonly timeWidget: Locator;
   readonly timeLines: Locator;
+  readonly darkModeToggle: Locator;
+  readonly body: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+  this.page = page;
 
-    // Define locators for reusable elements
-    this.profileRole = page.locator('#profile-widget .profile-role');
-    this.languageSwitcher = page.locator('#language-switcher #lang-select');
-    this.contentTitle = page.locator('#content-display #content-title');
-    this.contentBody = page.locator('#content-display #content-body');
-    this.xmbContainer = page.locator('#xmb-container');
-    this.timeWidget = page.locator('#time-widget');
-    this.timeLines = page.locator('#time-widget .time-lines');
+  // Define locators for reusable elements
+  this.profileRole = page.locator('#profile-widget .profile-role');
+  this.languageSwitcher = page.locator('#language-switcher #lang-select');
+  this.contentTitle = page.locator('#content-display #content-title');
+  this.contentBody = page.locator('#content-display #content-body');
+  this.xmbContainer = page.locator('#xmb-container');
+  this.timeWidget = page.locator('#time-widget');
+  this.timeLines = page.locator('#time-widget .time-lines');
+  this.darkModeToggle = page.locator('#dark-mode-toggle');
+  this.body = page.locator('body');
   }
 
   // --- Actions ---

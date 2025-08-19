@@ -1,3 +1,11 @@
+    #dark-mode-toggle {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        left: auto;
+        top: auto;
+        z-index: 101;
+    }
 /* 1. Global Styles & Imports */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -37,6 +45,16 @@ body {
 .profile-text-container { padding: 8px 16px; background: var(--bg-widget); border: var(--border-widget); border-radius: 12px; backdrop-filter: blur(2px); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
 .profile-name { font-size: 18px; font-weight: 600; }
 .profile-online-name, .profile-role { font-size: 13px; opacity: 0.8; }
+
+#top-right-widgets {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 11;
+}
 
 #language-switcher {
     position: relative;
@@ -85,9 +103,7 @@ body {
 }
 
 #time-widget {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    position: static;
     background-color: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -103,9 +119,7 @@ body {
 }
 
 #dark-mode-toggle {
-    position: absolute;
-    top: 1rem;
-    right: calc(1rem + 56px); /* 1rem + time widget width */
+    position: static;
     background: var(--bg-widget);
     border: var(--border-widget);
     border-radius: 50%;
@@ -114,7 +128,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 11;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -329,4 +342,42 @@ footer p {
         display: none;
         opacity: 0;
     }
+
+    /* Fix top-right-widgets position when time-widget is collapsed on mobile */
+    #top-right-widgets {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+        right: auto;
+        top: auto;
+        flex-direction: row;
+        z-index: 100;
+    }
+    #time-widget {
+        position: fixed;
+        cursor: pointer;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #time-widget.collapsed {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+    #time-widget .time-lines {
+        transition: opacity 0.2s ease;
+    }
+    #time-widget.collapsed .time-lines {
+        display: none;
+        opacity: 0;
+    }
+    #time-widget.collapsed ~ #dark-mode-toggle {
+        /* Ensure dark mode toggle stays next to collapsed time widget */
+        margin-left: 0;
+    }
+        /* Hide time widget on mobile */
+        #time-widget { display: none; }
 }
