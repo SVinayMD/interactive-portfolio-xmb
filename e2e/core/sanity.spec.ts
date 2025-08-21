@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures';
-import en from '../../locales/en.json';
+import en from '../../src/locales/en.json';
 
 test.describe('Sanity and Initial Load', () => {
   test('should load the page with correct title and default role', async ({ page, homePage }) => {

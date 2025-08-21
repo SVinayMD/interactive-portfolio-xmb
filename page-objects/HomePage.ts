@@ -33,7 +33,7 @@ export class HomePage {
   // --- Actions ---
 
   async goto() {
-    await this.page.goto('/');
+    await this.page.goto('src/');
   }
 
   async selectLanguage(language: 'en' | 'es') {
@@ -47,6 +47,7 @@ export class HomePage {
   }
 
   getVerticalMenuItem(name: string | RegExp): Locator {
-    return this.page.locator('.vertical-menu li', { hasText: name });
+  // Target the button inside each vertical menu item since attributes like data-link live on the button
+  return this.page.locator('.vertical-menu li button', { hasText: name });
   }
 }

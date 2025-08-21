@@ -1,0 +1,445 @@
+    #dark-mode-toggle {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        left: auto;
+        top: auto;
+        z-index: 101;
+    }
+/* 1. Global Styles & Imports */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --color-text: #ffffff;
+    --color-link: #a0e9ff;
+    --color-link-hover: #ffffff;
+    --color-glow: rgba(255, 255, 255, 0.8);
+    --color-title-glow: rgba(254, 81, 150, 0.5);
+
+    --bg-panel: rgba(10, 10, 20, 0.7);
+    --bg-widget: rgba(255, 255, 255, 0.1);
+    --bg-widget-hover: rgba(255, 255, 255, 0.2);
+    --border-widget: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling on desktop */
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 2. Page-level Widgets (Profile, Time, Background) */
+.animated-bg-grad { background: linear-gradient(-45deg, #fe5196, #8a5bf1, #2af598, #f77062); background-size: 400% 400%; animation: gradient 30s ease infinite; }
+@keyframes gradient { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+#dynamic-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+#dynamic-background canvas { display: block; width: 100%; height: 100%; }
+#profile-widget { position: absolute; top: 1rem; left: 1.5rem; display: flex; align-items: center; gap: 1rem; z-index: 10; }
+.profile-image-container { width: 70px; height: 70px; padding: 4px; background: var(--bg-widget); border: var(--border-widget); border-radius: 12px; flex-shrink: 0; }
+.profile-image-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.profile-text-container { padding: 8px 16px; background: var(--bg-widget); border: var(--border-widget); border-radius: 12px; backdrop-filter: blur(2px); text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+.profile-name { font-size: 18px; font-weight: 600; }
+.profile-online-name, .profile-role { font-size: 13px; opacity: 0.8; }
+
+#top-right-widgets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 11;
+}
+
+#language-switcher {
+    position: relative;
+    margin-left: 1rem;
+}
+
+#language-switcher i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text);
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+#lang-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bg-widget);
+    border: var(--border-widget);
+    border-radius: 8px;
+    padding: 8px 36px 8px 38px;
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#lang-select:focus { outline: none; }
+#lang-select:hover { background-color: var(--bg-widget-hover); }
+#lang-select option { background-color: #333; color: #fff; border: none; }
+
+#language-switcher::after {
+    content: '\f078';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+#time-widget {
+    position: static;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    z-index: 10;
+    cursor: default;
+}
+
+#dark-mode-toggle {
+    position: static;
+    background: var(--bg-widget);
+    border: var(--border-widget);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#dark-mode-toggle:hover {
+    background: var(--bg-widget-hover);
+}
+#dark-mode-toggle i {
+    font-size: 22px;
+    color: var(--color-text);
+    transition: color 0.2s;
+}
+
+body.dark-mode {
+    --color-text: #e0e0e0;
+    --color-link: #6ec6ff;
+    --color-link-hover: #e0e0e0;
+    --color-glow: rgba(80, 80, 80, 0.8);
+    --color-title-glow: rgba(80, 80, 80, 0.5);
+    --bg-panel: rgba(20, 20, 30, 0.85);
+    --bg-widget: rgba(40, 40, 60, 0.2);
+    --bg-widget-hover: rgba(60, 60, 80, 0.3);
+    --border-widget: 1px solid rgba(80, 80, 80, 0.3);
+}
+body.dark-mode.animated-bg-grad {
+    background: linear-gradient(-45deg, #23272e, #3a3f4a, #1a1d23, #444b5a);
+    background-size: 400% 400%;
+    animation: gradient 30s ease infinite;
+}
+.time-lines {
+    display: flex; flex-direction: column; gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.time-entry { display: flex; gap: 0.5rem; align-items: baseline; color: var(--color-text); text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); font-family: var(--font-primary), monospace; font-size: 14px; }
+.time-label { opacity: 0.7; font-size: 11px; font-weight: 400; }
+.gg-time { box-sizing: border-box; position: relative; display: block; transform: scale(var(--ggs,1)); width: 18px; height: 18px; border-radius: 100%; border: 2px solid transparent; box-shadow: 0 0 0 2px currentColor; color: white; }
+.gg-time::after { content: ""; display: block; box-sizing: border-box; position: absolute; width: 7px; height: 7px; border-left: 2px solid; border-bottom: 2px solid; top: 1px; left: 5px; }
+
+/* 3. Core XMB Navigation Layout */
+/* XMB container with horizontal menu centering */
+#xmb-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: max(20vh, 100px) 5vw 0 5vw;
+    height: 100vh;
+}
+.xmb-left-panel {
+    flex: 1 1 600px; /* Use flex-basis for ideal width, and allow shrinking */
+    min-width: 320px; /* A reasonable minimum width before the mobile layout kicks in */
+    max-width: 1200px; /* Cap the width so it doesn't get too large on wide screens */
+    height: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align menu content to the left */
+    justify-content: flex-start;
+    transition: max-width 0.3s ease, flex-basis 0.3s ease; /* Smoothly transition size changes */
+}
+
+/* 4. XMB Menu Item Styling (Horizontal & Vertical) */
+#horizontal-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 60px;
+    row-gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    transition: none;
+    height: auto;
+    margin-bottom: 20px;
+}
+.xmb-item {
+    opacity: 0.6; /* Increased opacity for better contrast */
+    transition: all 0.2s ease-in-out;
+}
+.xmb-item button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.xmb-item i { font-size: 48px; }
+.xmb-item span { margin-top: 10px; font-size: 16px; font-weight: 600; }
+.xmb-item.active { opacity: 1; transform: scale(1.25); filter: drop-shadow(0 0 15px var(--color-glow)); }
+
+#vertical-menus-container {
+    margin-top: 0;
+    padding-top: 0px;
+    display: flex;
+    justify-content: flex-start;
+}
+.vertical-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    will-change: transform;
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.vertical-menu.active {
+    display: block;
+}
+.vertical-menu li {
+    margin-bottom: 10px;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+    border-radius: 5px;
+}
+.vertical-menu li button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    display: flex; align-items: center; gap: 20px; padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    border-radius: 5px; /* Inherit border-radius for focus outline */
+}
+.vertical-menu li i { font-size: 24px; width: 30px; text-align: center; }
+.vertical-menu li span { font-size: 18px; }
+.vertical-menu li:has(button[aria-pressed="true"]) {
+    opacity: 1;
+    transform: translateX(10px);
+    color: var(--color-link);
+    font-weight: 600;
+}
+.vertical-menu li button[aria-pressed="true"] {
+    background-color: var(--bg-widget-hover);
+    border-left: 4px solid var(--color-link);
+    padding-left: 11px; /* Original 15px padding - 4px border */
+}
+#content-display { flex: 0 1 500px; background-color: var(--bg-panel); border: var(--border-widget); border-radius: 10px; padding: 25px; backdrop-filter: blur(8px); box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4); opacity: 0; transform: scale(0.95); max-height: 70vh; overflow: hidden; position: relative; }
+#content-display.visible { opacity: 1; transform: scale(1); transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; overflow: auto; }
+#content-title { margin-top: 0; font-size: 24px; font-weight: 600; color: var(--color-text); text-shadow: 0 0 8px var(--color-title-glow); }
+#content-body { font-size: 16px; line-height: 1.6; overflow-wrap: break-word; word-wrap: break-word; max-height: 60vh; overflow: auto; padding-right: 8px; }
+#content-body strong { color: #f0f0f0; }
+
+#content-body a {
+    color: var(--color-link);
+    text-decoration: underline;
+    transition: color 0.2s ease-in-out;
+}
+
+#content-body a:hover,
+#content-body a:focus {
+    color: var(--color-link-hover);
+    text-decoration: none;
+}
+/* Custom scrollbar for content display */
+#content-display::-webkit-scrollbar,
+#content-body::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+#content-display:hover::-webkit-scrollbar,
+#content-body:hover::-webkit-scrollbar {
+    background: rgba(255,255,255,0.08);
+}
+#content-display::-webkit-scrollbar-thumb,
+#content-body::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.18);
+    border-radius: 6px;
+    transition: background 0.2s;
+    opacity: 0.7;
+}
+#content-display:hover::-webkit-scrollbar-thumb,
+#content-body:hover::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.35);
+    opacity: 1;
+}
+/* Firefox scrollbar */
+#content-display {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.18) transparent;
+}
+#content-display:hover {
+    scrollbar-color: rgba(255,255,255,0.35) rgba(255,255,255,0.08);
+}
+
+/* Intermediate breakpoint for smaller desktops / tablets to scale the menu */
+@media (max-width: 1200px) {
+    #content-display {
+        flex-basis: 450px; /* Allow content panel to shrink a bit sooner */
+    }
+    #horizontal-menu {
+        gap: 40px; /* Reduce gap to make menu more compact */
+    }
+    .xmb-item i {
+        font-size: 42px; /* Slightly smaller icons */
+    }
+    .xmb-item span {
+        font-size: 15px;
+    }
+}
+/* 5. Responsive Adjustments */
+@media (max-height: 500px) {
+    body {
+        overflow-y: auto;
+    }
+    #xmb-container {
+        height: auto;
+        padding-bottom: 2rem;
+    }
+}
+
+/* Footer Styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    font-size: 0.8rem;
+    z-index: 1000; /* Ensure it's above the background canvas */
+    pointer-events: none; /* Allows clicks to pass through to elements underneath */
+}
+
+footer p {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+    body { overflow-y: auto; }
+    #xmb-container { flex-direction: column; align-items: stretch; padding: 160px 1rem 2rem 1rem; height: auto; }
+    #horizontal-menu { flex-wrap: wrap; justify-content: center; gap: 25px; row-gap: 30px; }
+    .xmb-item i { font-size: 40px; }
+    .xmb-item span { font-size: 14px; }
+    .xmb-left-panel { min-width: unset; width: auto; flex: initial; align-items: center; /* Center menus on mobile */ }
+    #vertical-menus-container { margin-top: 20px; justify-content: center; }
+    .vertical-menu li:last-child { margin-bottom: 0; }
+    .vertical-menu li:has(button[aria-pressed="true"]) { transform: translateX(5px); }
+    .vertical-menu li button[aria-pressed="true"] { padding-left: 11px; }
+    #content-display { width: 100%; margin-top: 15px; }
+    #profile-widget { left: 50%; transform: translateX(-50%); width: 90vw; }
+    .profile-name { font-size: 16px; }
+    #time-widget {
+        position: fixed;
+        cursor: pointer;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #time-widget.collapsed {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+    #time-widget .time-lines {
+        transition: opacity 0.2s ease;
+    }
+    #time-widget.collapsed .time-lines {
+        display: none;
+        opacity: 0;
+    }
+
+    /* Fix top-right-widgets position when time-widget is collapsed on mobile */
+    #top-right-widgets {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+        right: auto;
+        top: auto;
+        flex-direction: row;
+        z-index: 100;
+    }
+    #time-widget {
+        position: fixed;
+        cursor: pointer;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #time-widget.collapsed {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.35);
+    }
+    #time-widget .time-lines {
+        transition: opacity 0.2s ease;
+    }
+    #time-widget.collapsed .time-lines {
+        display: none;
+        opacity: 0;
+    }
+    #time-widget.collapsed ~ #dark-mode-toggle {
+        /* Ensure dark mode toggle stays next to collapsed time widget */
+        margin-left: 0;
+    }
+        /* Hide time widget on mobile */
+        #time-widget { display: none; }
+}

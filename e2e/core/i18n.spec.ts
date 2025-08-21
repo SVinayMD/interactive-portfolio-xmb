@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
-import en from '../../locales/en.json';
-import es from '../../locales/es.json';
+import en from '../../src/locales/en.json';
+import es from '../../src/locales/es.json';
 
 test.describe('Internationalization (i18n)', () => {
   test('should switch language and translate content', async ({ homePage }) => {

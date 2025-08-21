@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures';
-import en from '../../locales/en.json';
+import en from '../../src/locales/en.json';
 
 test.describe('Contact Links', () => {
   test('should have correct external links', async ({ homePage }) => {

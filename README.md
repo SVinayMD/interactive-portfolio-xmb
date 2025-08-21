@@ -53,6 +53,18 @@ To view the portfolio on a local server, run the following command. This will st
 ```bash
 npm start
 ```
+## Deploying obfuscated JS to GitHub Pages
+
+Source files in this repo remain readable. For GitHub Pages, a workflow builds a separate `site/` folder and obfuscates only the JS there.
+
+What happens on deploy:
+- `scripts/build-pages.mjs` prepares `site/` (copies `src/css`, `src/locales`, `assets`, rewrites `index.html` to load from `js/`).
+- `javascript-obfuscator` obfuscates `src/js/*` into `site/js/*`.
+- The GitHub Actions workflow `.github/workflows/pages.yml` uploads only `site/` to Pages.
+
+Manual preview locally:
+- Build the site: `npm run build:pages`
+- Serve the built site folder with any static server (e.g., from VS Code Live Server) at `site/`.
 
 ## 🧪 Running the Tests
 

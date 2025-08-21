@@ -1,4 +1,4 @@
-import en from '../../locales/en.json';
+import en from '../../src/locales/en.json';
 
 // This data is now isolated and can be imported by any test file.
 export const navigationTestData = [
