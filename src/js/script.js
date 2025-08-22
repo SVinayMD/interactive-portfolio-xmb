@@ -151,7 +151,6 @@ class XMBNavigation {
         this.addEventListeners();
         // Wait for translations to be applied before showing initial content
         document.addEventListener('translationsApplied', () => {
-            // The active item is now a button with aria-pressed="true"
             const activeItem = document.querySelector('.vertical-menu button[aria-pressed="true"]');
             if (activeItem) {
                 this.updateContent(activeItem);
@@ -166,7 +165,6 @@ class XMBNavigation {
         this.horizontalItems.forEach((item, index) => {
             const isActive = index === this.currentX;
             item.classList.toggle('active', isActive);
-            // For tabs, aria-selected is the correct attribute.
             item.querySelector('button').setAttribute('aria-selected', isActive);
         });
 
@@ -181,7 +179,6 @@ class XMBNavigation {
                 const menuButtons = Array.from(menu.querySelectorAll('li > button'));
                 menuButtons.forEach((button, itemIndex) => {
                     const isActive = itemIndex === this.currentY;
-                    // Use aria-pressed for the vertical menu buttons, as it's a better fit than aria-selected.
                     button.setAttribute('aria-pressed', isActive);
                 });
                 const activeVerticalItem = menu.querySelector('button[aria-pressed="true"]');
@@ -209,7 +206,6 @@ class XMBNavigation {
         // A short delay to allow the fade-out transition to start
         setTimeout(() => {
             if (selectedItem.dataset.hideContent) {
-                // Content should remain hidden, so we just return.
                 return;
             }
 
@@ -224,7 +220,7 @@ class XMBNavigation {
             
             // Move focus to the new content title for screen reader users
             this.contentTitle.focus();
-        }, 150); // A value shorter than the transition of 300ms
+        }, 150);
     }
 
     executeAction(selectedItem) {

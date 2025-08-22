@@ -29,7 +29,6 @@ jobs:
         run: |
           npm run build:pages
         env:
-          # Make sure CI is set so Playwright tests (if invoked) use retries, etc.
           CI: true
 
       - name: Upload artifact
