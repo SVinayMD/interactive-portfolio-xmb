@@ -2,7 +2,7 @@ import en from '../../src/locales/en.json';
 
 // This data is now isolated and can be imported by any test file.
 export const navigationTestData = [
-    { horizontal: en.menu_about, vertical: en.about_bio, expectedTitle: en.about_title, expectedBody: 'dedicated and detail-oriented' },
+    { horizontal: en.menu_about, vertical: en.about_bio, expectedTitle: en.about_title, expectedBody: 'manual and API testing' },
     { horizontal: en.menu_skills, vertical: en.skills_manual_label, expectedTitle: en.skills_manual_title, expectedBody: 'Test Case Design' },
     { horizontal: en.menu_skills, vertical: en.skills_api_label, expectedTitle: en.skills_api_title, expectedBody: 'Postman' },
     { horizontal: en.menu_skills, vertical: en.skills_tools_label, expectedTitle: en.skills_tools_title, expectedBody: 'Jira' },

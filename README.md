@@ -4,7 +4,7 @@ This is my personal portfolio website, It features a unique, keyboard-navigable 
 
 ### [➡️ View Live Demo](https://svinaymd.github.io/interactive-portfolio-xmb/)
 
-![Portfolio Navigation Demo](images/previewGif.gif)
+![Portfolio Navigation Demo](assets/images/previewGif.gif)
 
 ## ✨ Features
 
