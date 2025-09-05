@@ -226,6 +226,17 @@ class XMBNavigation {
     executeAction(selectedItem) {
         if (selectedItem.dataset.link) {
             window.open(selectedItem.dataset.link, '_blank');
+        } else if (selectedItem.dataset.cvDownload !== undefined) {
+            // Download the CV PDF
+            const pdfPath = 'assets/cv/Sebastian Vinay Muñoz Diaz- CV ATS.pdf';
+            const link = document.createElement('a');
+            link.href = pdfPath;
+            link.download = 'Sebastian Vinay Muñoz Diaz- CV ATS.pdf';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     }
 
@@ -275,17 +286,28 @@ class XMBNavigation {
 
         this.verticalMenus.forEach(menu => {
             menu.querySelectorAll('li > button').forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    const parentColumn = parseInt(menu.dataset.column, 10);
-                    // Check wasAlreadyActive based on aria-pressed state
-                    const wasAlreadyActive = button.getAttribute('aria-pressed') === 'true';
-                    this.currentX = parentColumn;
-                    this.currentY = index;
-                    this.updateSelection();
-                    if (wasAlreadyActive) {
+                // Special handler for CV button: always download on click
+                if (button.dataset.cvDownload !== undefined) {
+                    button.addEventListener('click', () => {
                         this.executeAction(button);
-                    }
-                });
+                        // Still update selection for keyboard consistency
+                        const parentColumn = parseInt(menu.dataset.column, 10);
+                        this.currentX = parentColumn;
+                        this.currentY = index;
+                        this.updateSelection();
+                    });
+                } else {
+                    button.addEventListener('click', () => {
+                        const parentColumn = parseInt(menu.dataset.column, 10);
+                        const wasAlreadyActive = button.getAttribute('aria-pressed') === 'true';
+                        this.currentX = parentColumn;
+                        this.currentY = index;
+                        this.updateSelection();
+                        if (wasAlreadyActive) {
+                            this.executeAction(button);
+                        }
+                    });
+                }
             });
         });
     }

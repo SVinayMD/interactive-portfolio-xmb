@@ -8,6 +8,8 @@
     "about_title": "Sobre Sebastian",
     "about_content": "Soy Ingeniero QA con 2 años de experiencia asegurando la calidad del producto mediante pruebas manuales y de API, complementadas con automatización. Me enfoco en prevenir defectos de forma temprana, diseñar suites de prueba mantenibles y colaborar con los equipos de ingeniería para entregar versiones estables y centradas en el usuario.",
     "about_bio": "Biografía",
+    "cv_label": "Currículum Vitae",
+    "cv_title": "Descargar mi CV (PDF)",
     "skills_manual_title": "Pruebas Funcionales y No Funcionales",
     "skills_manual_content": "• Diseño y ejecución de casos de prueba<br>• Pruebas exploratorias<br>• Regresión y smoke<br>• UI/UX<br>• Cross‑browser y cross‑device<br>• Chequeos no funcionales (accesibilidad y performance básicos)<br>• Reporte y seguimiento de defectos (Jira)",
     "skills_manual_label": "Funcionales y No Funcionales",

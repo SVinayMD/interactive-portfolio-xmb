@@ -8,6 +8,8 @@
     "about_title": "About Sebastian",
     "about_content": "I am a QA Engineer with 2 years of experience ensuring product quality through manual and API testing, complemented by test automation. I focus on preventing defects early, designing lean and maintainable test suites, and collaborating with engineering teams to deliver stable, user‑centric releases.",
     "about_bio": "Bio",
+    "cv_label": "Curriculum Vitae",
+    "cv_title": "Download my CV (PDF)",
     "skills_manual_title": "Functional & Non-Functional Testing",
     "skills_manual_content": "• Test Case Design & Execution<br>• Exploratory Testing<br>• Regression & Smoke Testing<br>• UI/UX Testing<br>• Cross-Browser & Cross-Device Testing<br>• Non‑functional checks (basic accessibility and performance smoke)<br>• Defect Reporting & Tracking (Jira)",
     "skills_manual_label": "Functional & Non-Functional",
